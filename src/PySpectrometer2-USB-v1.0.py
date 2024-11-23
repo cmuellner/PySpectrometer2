@@ -178,6 +178,7 @@ while(cap.isOpened()):
 		w=frameWidth 	#width of the crop
 		cropped = frame[y:y+h, x:x+w]
 		bwimage = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
+		bwimage = cv2.flip(bwimage, 1)
 		rows,cols = bwimage.shape
 		halfway =int(rows/2)
 		#show our line on the original image
