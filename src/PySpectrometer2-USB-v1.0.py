@@ -5,7 +5,7 @@ PySpectrometer2 Les Wright 2022
 https://www.youtube.com/leslaboratory
 https://github.com/leswright1977
 
-This project is a follow on from: https://github.com/leswright1977/PySpectrometer 
+This project is a follow on from: https://github.com/leswright1977/PySpectrometer
 
 This is a more advanced, but more flexible version of the original program. Tk Has been dropped as the GUI to allow fullscreen mode on Raspberry Pi systems and the iterface is designed to fit 800*480 screens, which seem to be a common resolutin for RPi LCD's, paving the way for the creation of a stand alone benchtop instrument.
 
@@ -22,9 +22,7 @@ Key Bindings for all operations
 All old features have been kept, including peak hold, peak detect, Savitsky Golay filter, and the ability to save graphs as png and data as CSV.
 
 For instructions please consult the readme!
-
 '''
-
 
 import cv2
 import time
@@ -48,12 +46,12 @@ if args.fullscreen:
 if args.waterfall:
 	print("Waterfall display enabled")
 	dispWaterfall = True
-	
+
 if args.device:
 	dev = args.device
 else:
 	dev = 0
-	
+
 if args.fps:
 	fps = args.fps
 else:
@@ -101,7 +99,7 @@ thresh = 20 #Threshold max val 100
 
 calibrate = False
 
-clickArray = [] 
+clickArray = []
 cursorX = 0
 cursorY = 0
 def handle_mouse(event,x,y,flags,param):
@@ -111,7 +109,7 @@ def handle_mouse(event,x,y,flags,param):
 	mouseYOffset = 160
 	if event == cv2.EVENT_MOUSEMOVE:
 		cursorX = x
-		cursorY = y	
+		cursorY = y
 	if event == cv2.EVENT_LBUTTONDOWN:
 		mouseX = x
 		mouseY = y-mouseYOffset
@@ -179,7 +177,7 @@ while(cap.isOpened()):
 		h=80 	#height of the crop
 		w=frameWidth 	#width of the crop
 		cropped = frame[y:y+h, x:x+w]
-		bwimage = cv2.cvtColor(cropped,cv2.COLOR_BGR2GRAY)
+		bwimage = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
 		rows,cols = bwimage.shape
 		halfway =int(rows/2)
 		#show our line on the original image
@@ -213,11 +211,11 @@ while(cap.isOpened()):
 			if i>=64:
 				if i%64==0: #suppress the first line then draw the rest...
 					cv2.line(graph,(0,i),(frameWidth,i),(100,100,100),1)
-		
+
 		#Now process the intensity data and display it
 		#intensity = []
 		for i in range(cols):
-			#data = bwimage[halfway,i] #pull the pixel data from the halfway mark	
+			#data = bwimage[halfway,i] #pull the pixel data from the halfway mark
 			#print(type(data)) #numpy.uint8
 			#average the data of 3 rows of pixels:
 			dataminus1 = bwimage[halfway-1,i]
@@ -225,8 +223,8 @@ while(cap.isOpened()):
 			dataplus1 = bwimage[halfway+1,i]
 			data = (int(dataminus1)+int(datazero)+int(dataplus1))/3
 			data = np.uint8(data)
-					
-			
+
+
 			if holdpeaks == True:
 				if data > intensity[i]:
 					intensity[i] = data
@@ -254,20 +252,17 @@ while(cap.isOpened()):
 
 			hsv = cv2.cvtColor(waterfall, cv2.COLOR_BGR2HSV)
 
-
-
 		#Draw the intensity data :-)
 		#first filter if not holding peaks!
-		
+
 		if holdpeaks == False:
 			intensity = savitzky_golay(intensity,17,savpoly)
 			intensity = np.array(intensity)
 			intensity = intensity.astype(int)
-			holdmsg = "Holdpeaks OFF" 
+			holdmsg = "Holdpeaks OFF"
 		else:
 			holdmsg = "Holdpeaks ON"
-			
-		
+
 		#now draw the intensity data....
 		index=0
 		for i in intensity:
@@ -319,11 +314,8 @@ while(cap.isOpened()):
 				cv2.circle(graph,(mouseX,mouseY),5,(0,0,0),-1)
 				#we can display text :-) so we can work out wavelength from x-pos and display it ultimately
 				cv2.putText(graph,str(mouseX),(mouseX+5,mouseY),cv2.FONT_HERSHEY_SIMPLEX,0.4,(0,0,0))
-		
 
-	
-
-		#stack the images and display the spectrum	
+		#stack the images and display the spectrum
 		spectrum_vertical = np.vstack((messages,cropped, graph))
 		#dividing lines...
 		cv2.line(spectrum_vertical,(0,80),(frameWidth,80),(255,255,255),1)
@@ -341,7 +333,7 @@ while(cap.isOpened()):
 		cv2.imshow(title1,spectrum_vertical)
 
 		if dispWaterfall == True:
-			#stack the images and display the waterfall	
+			#stack the images and display the waterfall
 			waterfall_vertical = np.vstack((messages,cropped, waterfall))
 			#dividing lines...
 			cv2.line(waterfall_vertical,(0,80),(frameWidth,80),(255,255,255),1)
@@ -444,13 +436,10 @@ while(cap.isOpened()):
 				thresh-=1
 				if thresh <=0:
 					thresh=0
-	else: 
+	else:
 		break
 
- 
 #Everything done, release the vid
 cap.release()
 
 cv2.destroyAllWindows()
-
-

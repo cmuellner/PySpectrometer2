@@ -3,7 +3,7 @@ PySpectrometer2 Les Wright 2022
 https://www.youtube.com/leslaboratory
 https://github.com/leswright1977
 
-This project is a follow on from: https://github.com/leswright1977/PySpectrometer 
+This project is a follow on from: https://github.com/leswright1977/PySpectrometer
 
 This is a more advanced, but more flexible version of the original program. Tk Has been dropped as the GUI to allow fullscreen mode on Raspberry Pi systems and the iterface is designed to fit 800*480 screens, which seem to be a common resolutin for RPi LCD's, paving the way for the creation of a stand alone benchtop instrument.
 
@@ -235,7 +235,7 @@ def peakIndexes(y, thres=0.3, min_dist=1, thres_abs=False):
 
 		peaks = np.arange(y.size)[~rem]
 
-	return peaks	
+	return peaks
 
 
 def readcal(width):
@@ -323,7 +323,7 @@ def readcal(width):
 		print(C4)
 		'''
 		print("Generating Wavelength Data!\n\n")
-		for pixel in range(width):		
+		for pixel in range(width):
 			wavelength=((C1*pixel**3)+(C2*pixel**2)+(C3*pixel)+C4)
 			wavelength = round(wavelength,6)
 			wavelengthData.append(wavelength)
@@ -343,7 +343,7 @@ def readcal(width):
 		corr_matrix = np.corrcoef(wavelengths, predicted)
 		corr = corr_matrix[0,1]
 		R_sq = corr**2
-		 
+
 		print("R-Squared="+str(R_sq))
 
 		message = 2 #Multiwavelength cal, 3rd order poly
@@ -382,7 +382,7 @@ def writecal(clickArray):
 		wldata.append(wavelength)
 	#This try except serves two purposes
 	#first I want to write data to the caldata.txt file without quotes
-	#second it validates the data in as far as no strings were entered 
+	#second it validates the data in as far as no strings were entered
 	try:
 		wldata = [float(x) for x in wldata]
 	except:
@@ -418,7 +418,7 @@ def generateGraticule(wavelengthData):
 			position = min(enumerate(wavelengthData), key=lambda x: abs(i - x[1]))
 			#If the difference between the target and result is <9 show the line
 			#(otherwise depending on the scale we get dozens of number either end that are close to the target)
-			if abs(i-position[1]) <1: 
+			if abs(i-position[1]) <1:
 				#print(i)
 				#print(position)
 				tens.append(position[0])
@@ -430,7 +430,7 @@ def generateGraticule(wavelengthData):
 			position = min(enumerate(wavelengthData), key=lambda x: abs(i - x[1]))
 			#If the difference between the target and result is <1 show the line
 			#(otherwise depending on the scale we get dozens of number either end that are close to the target)
-			if abs(i-position[1]) <1: 
+			if abs(i-position[1]) <1:
 				labelpos = position[0]
 				labeltxt = int(round(position[1]))
 				labeldata = [labelpos,labeltxt]
